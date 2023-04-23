@@ -300,21 +300,23 @@ async def kiss(ctx, member: discord.Member):
         title=" ",
         color=discord.Colour.random(),
     )
-    output = ctx.message.author.name + " kisses " + member.name + "! とても可愛い!"
+    output = ctx.message.author.name+" kisses "+member.name+"! とても可愛い!"
     embed.set_author(
         name=output,
         icon_url=ctx.message.author.avatar
     )
-    # embed.set_image(url="https://i.pinimg.com/originals/42/96/c7/4296c7ac748548f7f3e4f593eaa238c1.jpg")
-    # await ctx.send(ctx.message.author.avatar)
-    # image
-    file_path_type = ["./images/kisses/*.png", "./images/kisses/*.jpeg", "./images/kisses/*.gif"]
-    images = glob.glob(random.choice(file_path_type))
-    random_image = random.choice(images)
+
+    dir_path = r'./images/kisses/'
+    files = os.listdir(dir_path)
+    image_files = [f for f in files if
+                   os.path.isfile(os.path.join(dir_path, f)) and f.endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+    random_image = random.choice(image_files)
+    random_image = dir_path + random_image
+
     split_tup = os.path.splitext(random_image)
-    file_name = "kiss" + split_tup[1]
+    file_name = "kiss"+split_tup[1]
     file = discord.File(random_image, filename=file_name)
-    embed.set_image(url="attachment://" + file_name)
+    embed.set_image(url="attachment://"+file_name)
     await ctx.send(embed=embed, file=file)
 
 
